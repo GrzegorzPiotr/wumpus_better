@@ -17,14 +17,14 @@ public class Environment {
      * The perceptions that can be sensed by the player.
      */
     public enum Perception {
-        SCREAM, STENCH, BREEZE, GLITTER, BUMP, NO_ARROWS
+        SCREAM, STENCH, BREEZE, GLITTER, BUMP, NO_ARROWS, NO_BRIDGE, DONE,
     }
 
     /**
      * The actions that the player can take.
      */
     public enum Action {
-        GO_FORWARD, TURN_LEFT, TURN_RIGHT, GRAB, SHOOT_ARROW, NOOP, EXIT
+        GO_FORWARD, TURN_LEFT, TURN_RIGHT, GRAB, SHOOT_ARROW, BRIDGE, EXIT
     }
 
     /**
@@ -70,6 +70,9 @@ public class Environment {
                     break;
                 case SHOOT_ARROW:
                     sum += -10;
+                    break;
+                case BRIDGE:
+                    sum += +1;
                     break;
             }
         }

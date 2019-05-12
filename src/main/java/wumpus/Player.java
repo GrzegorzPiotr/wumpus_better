@@ -29,9 +29,10 @@ public class Player extends Object {
     private Direction direction = Direction.E;
     private boolean alive = true;
     private boolean gold = false;
-    private int arrows = 3;
+    private int arrows = 5;
+    private int bridge = 2;
 
-    /**
+    /**s
      * Creates a new Player for the given world.
      * @param world The world instance that this player belongs
      */
@@ -59,10 +60,12 @@ public class Player extends Object {
      * Resets the player state.
      */
     public void initialize() {
-        arrows = 3;
+        arrows = 5;
+        bridge = 2;
         gold = false;
         direction = Direction.E;
         actions.clear();
+
     }
 
     /**
@@ -136,6 +139,45 @@ public class Player extends Object {
         }
     }
 
+
+    public Perception buildBridge() {
+        if (bridge > 0) {
+            bridge --;
+            int[] neighbors = getTile().getNeighbors();
+            // Select the right neighbor to shoot
+            Tile neighbor = null;
+            switch (direction) {
+                case N:
+                    if (neighbors[0] > -1) neighbor = world.getPosition(neighbors[0]);
+                    break;
+                case E:
+                    if (neighbors[1] > -1) neighbor = world.getPosition(neighbors[1]);
+                    break;
+                case S:
+                    if (neighbors[2] > -1) neighbor = world.getPosition(neighbors[2]);
+                    break;
+                case W:
+                    if (neighbors[3] > -1) neighbor = world.getPosition(neighbors[3]);
+                    break;
+            }
+            // Hear a scream after if killed Wumpus
+            if (neighbor != null && neighbor.contains(Element.PIT)) {
+                neighbor.remove(Element.PIT);
+                // Add the Scream to the current perception
+                return Perception.DONE;
+            }
+            // Nothing happens
+            return null;
+        } else {
+            return Perception.NO_BRIDGE;
+        }
+    }
+
+
+
+
+
+
     /**
      * Interacts with the world executing an action.
      * @param action The action to take
@@ -191,8 +233,13 @@ public class Player extends Object {
                 Perception perception = shootArrow();
                 if (perception != null) setPerceptions(perception);
                 return;
+            case BRIDGE:
+                Perception perception2 = buildBridge ();
+                if (perception2 != null) setPerceptions(perception2);
+                return;
         }
-        // Reprocess all events
+        // Reprocess all eventsf
+
         setPerceptions();
     }
 

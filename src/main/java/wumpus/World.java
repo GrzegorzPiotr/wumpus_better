@@ -70,7 +70,7 @@ public class World {
     public static class WorldBuilder {
         private static final int RANDOM_MAX_TRIES = 20;
         private static final int DEFAULT_GOLD = 1;
-        private static final int DEFAULT_WUMPUS = 1;
+        private static final int DEFAULT_WUMPUS = 2;
         private static final int DEFAULT_PITS = 2;
 
         private int width;
